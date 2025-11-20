@@ -1,0 +1,44 @@
+import java.util.*;
+
+class LSR {
+    public static void main(String a[]) {
+        Scanner sc = new Scanner(System.in);
+        int INF = 999;
+
+        System.out.print("Nodes: ");
+        int n = sc.nextInt();
+        int cost[][] = new int[n][n];
+
+        for (int i=0;i<n;i++) Arrays.fill(cost[i], INF);
+        for (int i=0;i<n;i++) cost[i][i] = 0;
+
+        System.out.print("Edges: ");
+        int e = sc.nextInt();
+
+        System.out.println("u v w:");
+        for (int i=0;i<e;i++) {
+            int u=sc.nextInt(), v=sc.nextInt(), w=sc.nextInt();
+            cost[u][v]=w; cost[v][u]=w;
+        }
+
+        System.out.print("Source: ");
+        int s = sc.nextInt();
+
+        int dist[] = new int[n], vis[] = new int[n];
+        for (int i=0;i<n;i++) dist[i] = cost[s][i];
+
+        vis[s]=1; dist[s]=0;
+
+        for (int k=1;k<n;k++) {
+            int min=INF, u=0;
+            for (int i=0;i<n;i++)
+                if(vis[i]==0 && dist[i]<min){ min=dist[i]; u=i; }
+            vis[u]=1;
+            for (int v=0;v<n;v++)
+                if(vis[v]==0 && dist[u]+cost[u][v]<dist[v])
+                    dist[v]=dist[u]+cost[u][v];
+        }
+
+        for(int i=0;i<n;i++) System.out.println("To "+i+" = "+dist[i]);
+    }
+}
